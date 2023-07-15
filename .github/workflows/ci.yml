@@ -13,11 +13,16 @@ on:
 
 jobs:
   test:
-    name: ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    name: ${{matrix.subset-size}} - ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        subset-size:
+          - 300K
+          - 10M
+          - 30M
+          - 100M
         version:
           - "1.8"
         os:
@@ -28,11 +33,6 @@ jobs:
           - os: macOS-latest
             arch: x86
         python-version: ["3.10"]
-        size:
-          - 300K
-          - 10M
-          - 30M
-          - 100M
     steps:
       - uses: actions/checkout@v3
         with:
@@ -53,17 +53,17 @@ jobs:
           conda install -c pytorch faiss-cpu=1.7.4 mkl=2021 blas=1.0=mkl
           conda install matplotlib scikit-learn
           pip install h5py
-      - name: Run benchmark (size=${{ matrix.python-version }})
+      - name: Run benchmark (size=${{ matrix.subset-size }})
         shell: bash -el {0}
         run: |
           conda activate faiss
-          chmod +x ./run_${{ matrix.python-version }}.sh
-          ./run_${{ matrix.python-version }}.sh
+          chmod +x ./run_${{ matrix.subset-size }}.sh
+          ./run_${{ matrix.subset-size }}.sh
           python3 eval/eval.py --dir result
-          python3 eval/plot.py --size=${{ matrix.python-version }} res.csv
+          python3 eval/plot.py --size=${{ matrix.subset-size }} res.csv
       - uses: actions/upload-artifact@v3
         with:
-          name: Results on ${{ matrix.python-version }}
+          name: Results on ${{ matrix.subset-size }}
           path: |
             res.csv
-            result_${{ matrix.python-version }}.png
+            result_${{ matrix.subset-size }}.png
