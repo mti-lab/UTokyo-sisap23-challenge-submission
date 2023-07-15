@@ -10,9 +10,13 @@ This repository is a submission for the [SISAP 2023 Indexing Challenge](https://
   - Yusuke Matsui (The University of Tokyo, matsui [at] hal.t.u-tokyo.ac.jp)
 
 ## How to run on CI
-The following instructions are for the CI workflow.
-The commit hash you should use in evaluation is on [our pre-registration issue](https://github.com/sisap-challenges/challenge2023/issues/2).
+The following instructions are for the CI workflow. 
 
+- Go to [CI page in Actions tab](https://github.com/mti-lab/mti-lab-sisap23-challenge-submission/actions/workflows/ci.yml).
+- Click `Run workflow` button.
+- Select `main` branch. (by default)
+- Fill in `ref` input with the commit hash you will evaluate.
+  - The commit hash you should use in evaluation is on [our pre-registration issue](https://github.com/sisap-challenges/challenge2023/issues/2).
 
 
 The following jobs are executed in sequence.
@@ -22,8 +26,6 @@ The following jobs are executed in sequence.
 - `Run benchmark (size=100M)`
 
 The each result including csv files and figures is saved as an artifact `Results on ${size}`. You can download it from the GitHub Actions page.
-
-
 
 
 ## How to run on local environment
