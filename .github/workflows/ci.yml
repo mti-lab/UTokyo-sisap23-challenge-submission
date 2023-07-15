@@ -5,9 +5,14 @@ on:
   workflow_dispatch:
     inputs:
       size:
-        description: "Size of dataset (300K, 10M, 30M, 100M)"
+        type: choice
+        description: "Size of dataset"
         required: true
-        default: "300K"
+        options:
+          - "300K"
+          - "10M"
+          - "30M"
+          - "100M"
       ref:
         description: "Ref (commit hash)"
         required: false
