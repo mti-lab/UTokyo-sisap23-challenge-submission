@@ -19,6 +19,9 @@ The following instructions are for the CI workflow.
   - The commit hash you should use in evaluation is on [our pre-registration issue](https://github.com/sisap-challenges/challenge2023/issues/2).
 
 
+![CI page](./image/ci_instruction.png)
+
+
 The following jobs are executed in sequence.
 - `Run benchmark (size=300K)`
 - `Run benchmark (size=10M)`

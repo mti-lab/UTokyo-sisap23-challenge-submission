@@ -164,3 +164,4 @@ cython_debug/
 *.h5
 *.png
 *.csv
+!image/ci_instruction.png
