@@ -120,44 +120,40 @@ def run(
 
     index_identifier = algo
 
-    if kind.startswith("clip768"):
-        do_reduction = algo.startswith("PCA")
-        print("do_reduction", do_reduction)
-        if do_reduction:
-            pca_id = algo.split(",")[0]
-            index_identifier = ",".join(algo.split(",")[1:])  # exclude PCA
-            reduced_d = int(pca_id[3:])
-
-            # reduce data dim
-            print(f"before reduction: data.shape = {data.shape}")
-            mat = faiss.PCAMatrix(d, reduced_d)
-            mat.train(data)
-            assert mat.is_trained
-            data = mat.apply_py(data)
-            print(f"after reduction: data.shape = {data.shape}")
-
-            # reduce query dim
-            print(f"before reduction: queries.shape = {queries.shape}")
-            queries = mat.apply_py(queries)
-            print(f"after reduction: queries.shape = {queries.shape}")
-
-        index_dim = data.shape[1]
-
-        # init index instance
-        index = faiss.index_factory(index_dim, index_identifier)
-
-    else:
-        raise Exception(f"unsupported input type {kind}")
-
+    # dimension reduction with PCA
+    do_reduction = algo.startswith("PCA")
+    print("do_reduction", do_reduction)
     start = time.time()
+    if do_reduction:
+        pca_id = algo.split(",")[0]
+        index_identifier = ",".join(algo.split(",")[1:])  # exclude PCA
+        reduced_d = int(pca_id[3:])
+
+        # reduce data dim
+        print(f"before reduction: data.shape = {data.shape}")
+        mat = faiss.PCAMatrix(d, reduced_d)
+        mat.train(data)
+        assert mat.is_trained
+        data = mat.apply_py(data)
+        print(f"after reduction: data.shape = {data.shape}")
+
+        # reduce query dim
+        print(f"before reduction: queries.shape = {queries.shape}")
+        queries = mat.apply_py(queries)
+        print(f"after reduction: queries.shape = {queries.shape}")
+
+    # init index instance
+    index_dim = data.shape[1]
+    index = faiss.index_factory(index_dim, index_identifier)
+
+    # training
     print(f"Training index on {data.shape}")
     index.train(data)
     index.add(data)
     assert index.is_trained
+
     # setup entrypoint searcher
-    print("Entry Point Search Mode:", ep_search)
     cur_ep = index.nsg.enterpoint
-    print(f"current enterpoint: {cur_ep}")
     ep_searcher = get_ep_searcher(data, cur_ep, ep_search, n_ep)
 
     elapsed_build = time.time() - start
