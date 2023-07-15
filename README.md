@@ -33,7 +33,8 @@ The each result including csv files and figures is saved as an artifact `Results
 
 
 ## How to run on local environment
-The following instructions are the same as the CI workflow.
+The following instructions are the same as the CI workflow, but you need to install dependencies and run scripts manually. You can run the scripts on your local environment.
+Please replace size `300K` with `10M`, `30M`, or `100M` for other subsets.
 
 ### Install dependencies
 ```bash
@@ -45,8 +46,6 @@ pip install h5py
 ```
 
 ### Run search
-Please replace size `300K` with `10M`, `30M`, and `100M` for other subsets.
-
 ```bash
 chmod +x ./run_300K.sh
 ./run_300K.sh
@@ -70,23 +69,23 @@ Details will be described in the paper. Here is a short summary.
 
 ## Scripts
 ### Scripts for search
-- search/search.py
+- `search/search.py`
   - Main script for search
-- search/antihub_removal.py
+- `search/antihub_removal.py`
   - [AntihubRemoval](https://github.com/naaktslaktauge/antihub-removal) implementation.
-- search/ep_searcher.py
+- `search/ep_searcher.py`
   - Algorithms to search for better enterpoints of NSG graph traversal by using kmeans clustering.
 
 ### Scripts for tuning parameters
 These scripts are used for tuning hyperparameters, which is not used for evaluation.
 
-- search/analyze_singleobj_opt.py
-- search/analyze_multiobj_opt.py
-- search/opt_singleobj_nsg.py
-- search/opt_multiobj_nsg.py
+- `search/analyze_singleobj_opt.py`
+- `search/analyze_multiobj_opt.py`
+- `search/opt_singleobj_nsg.py`
+- `search/opt_multiobj_nsg.py`
 
 ### Scripts for evaluation
-- eval/ directory contains scripts for evaluation from [sisap23-laion-challenge-evaluation](https://github.com/sisap-challenges/sisap23-laion-challenge-evaluation/tree/master).
+- `eval/` directory contains scripts for evaluation from [sisap23-laion-challenge-evaluation](https://github.com/sisap-challenges/sisap23-laion-challenge-evaluation/tree/master) as a submodule.
 
 ## Reference
 - AntihubRemoval: K. Tanaka, Y. Matsui, and S. Satoh (2021). Efficient Nearest Neighbor Search by Removing Anti-hub. ICMR 2021
