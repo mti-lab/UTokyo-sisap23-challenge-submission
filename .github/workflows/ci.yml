@@ -48,16 +48,17 @@ jobs:
           conda install -c pytorch faiss-cpu=1.7.4 mkl=2021 blas=1.0=mkl
           conda install matplotlib scikit-learn
           pip install h5py
-      - name: Run benchmark
+      - name: Run benchmark (size=300K)
         shell: bash -el {0}
         run: |
           conda activate faiss
-          python3 search/search.py
-          python3 eval/eval.py
-          python3 eval/plot.py res.csv
+          chmod +x ./run_300K.sh
+          ./run_300K.sh
+          python3 eval/eval.py --dir result
+          python3 eval/plot.py --size=300K res.csv
       - uses: actions/upload-artifact@v3
         with:
-          name: Results on 100k
+          name: Results on 300K
           path: |
             res.csv
-            result_100K.png
+            result_300K.png
