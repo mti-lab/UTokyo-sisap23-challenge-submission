@@ -37,7 +37,6 @@ python eval/eval.py --dir result
 python eval/plot.py --size 300K res.csv
 ```
 
-
 ## Dependencies
 All dependencies are included in `.github/workflows/ci.yml`.
 
@@ -50,3 +49,23 @@ Details will be described in the paper. Here is a short summary.
 - Reduce vector dimension by using PCA. The dimension is a SIMD-friendly value.
 - Use [AntihubRemoval](https://github.com/naaktslaktauge/antihub-removal) for the preprocessing, which reduce the number of data points by removing anti-hub points.
 - Hyperparameters are tuned with multi-objective blackbox optimization using [Optuna](https://optuna.readthedocs.io/en/stable/index.html) library.
+
+## Scripts
+### Scripts for search
+- search/search.py
+  - Main script for search
+- search/antihub_removal.py
+  - [AntihubRemoval](https://github.com/naaktslaktauge/antihub-removal) implementation.
+- search/ep_searcher.py
+  - Algorithms to search for better enterpoints of NSG graph traversal by using kmeans clustering.
+
+### Scripts for tuning parameters
+These scripts are used for tuning hyperparameters, which is not used for evaluation.
+
+- search/analyze_singleobj_opt.py
+- search/analyze_multiobj_opt.py
+- search/opt_singleobj_nsg.py
+- search/opt_multiobj_nsg.py
+
+### Scripts for evaluation
+- eval/ directory contains scripts for evaluation from [sisap23-laion-challenge-evaluation](https://github.com/sisap-challenges/sisap23-laion-challenge-evaluation/tree/master).
