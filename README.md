@@ -31,6 +31,21 @@ The following jobs are executed in sequence.
 
 The each result including csv files and figures is saved as an artifact `Results on ${size}`. You can download it from the GitHub Actions page.
 
+## How to use other query sets
+Change the following section in `search/search.py` to use other query sets.
+You can change if needed:
+- `public-queries-10k` to other query set file name.
+- change base url `url` to other url.
+
+```python
+def prepare(kind: str, size: Size):
+    url = "https://sisap-23-challenge.s3.amazonaws.com/SISAP23-Challenge"
+    task = {
+        "query": f"{url}/public-queries-10k-{kind}.h5",
+        "dataset": f"{url}/laion2B-en-{kind}-n={size}.h5",
+    }
+...
+```
 
 ## How to run on local environment
 The following instructions are the same as the CI workflow, but you need to install dependencies and run scripts manually. You can run the scripts on your local environment.
