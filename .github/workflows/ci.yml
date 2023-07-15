@@ -12,6 +12,10 @@ on:
     tags: "*"
   workflow_dispatch:
     inputs:
+      size:
+        description: "Size of dataset (300K, 10M, 30M, 100M)"
+        required: true
+        default: "300K"
       ref:
         description: "Ref (commit hash)"
         required: false
@@ -58,62 +62,17 @@ jobs:
           conda install -c pytorch faiss-cpu=1.7.4 mkl=2021 blas=1.0=mkl
           conda install matplotlib scikit-learn
           pip install h5py
-      - name: Run benchmark (size=300K)
+      - name: Run benchmark (size=${{ github.event.inputs.size }})
         shell: bash -el {0}
         run: |
           conda activate faiss
-          chmod +x ./run_300K.sh
-          ./run_300K.sh
+          chmod +x ./run_${{ github.event.inputs.size }}.sh
+          ./run_${{ github.event.inputs.size }}.sh
           python3 eval/eval.py
-          python3 eval/plot.py --size=300K res.csv
+          python3 eval/plot.py --size=${{ github.event.inputs.size }} res.csv
       - uses: actions/upload-artifact@v3
         with:
-          name: Results on 300K
+          name: Results on ${{ github.event.inputs.size }}
           path: |
             res.csv
-            result_300K.png
-
-      - name: Run benchmark (size=10M)
-        shell: bash -el {0}
-        run: |
-          conda activate faiss
-          chmod +x ./run_10M.sh
-          ./run_10M.sh
-          python3 eval/eval.py
-          python3 eval/plot.py --size=10M res.csv
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Results on 10M
-          path: |
-            res.csv
-            result_10M.png
-
-      - name: Run benchmark (size=30M)
-        shell: bash -el {0}
-        run: |
-          conda activate faiss
-          chmod +x ./run_30M.sh
-          ./run_30M.sh
-          python3 eval/eval.py
-          python3 eval/plot.py --size=30M res.csv
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Results on 30M
-          path: |
-            res.csv
-            result_30M.png
-
-      - name: Run benchmark (size=100M)
-        shell: bash -el {0}
-        run: |
-          conda activate faiss
-          chmod +x ./run_100M.sh
-          ./run_100M.sh
-          python3 eval/eval.py
-          python3 eval/plot.py --size=100M res.csv
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Results on 100M
-          path: |
-            res.csv
-            result_100M.png
+            result_${{ github.event.inputs.size }}.png
