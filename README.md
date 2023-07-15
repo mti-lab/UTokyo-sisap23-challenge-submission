@@ -48,7 +48,7 @@ chmod +x ./run_300K.sh
 
 ### Run evaluation
 ```bash
-python eval/eval.py --dir result
+python eval/eval.py
 python eval/plot.py --size 300K res.csv
 ```
 
