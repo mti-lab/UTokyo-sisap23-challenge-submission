@@ -1,1 +1,52 @@
 # mti-lab-sisap23-challenge-submission
+
+This repository is a submission for the [SISAP 2023 Indexing Challenge](https://sisap-challenges.github.io/) by team mti-lab.
+
+## Information
+- Task: A
+- Subset: clip768 (300K, 10M, 30M, 100M)
+- members
+  - Yutaro Oguri (The University of Tokyo, oguri [at] hal.t.u-tokyo.ac.jp)
+  - Yusuke Matsui (The University of Tokyo, matsui [at] hal.t.u-tokyo.ac.jp)
+
+## How to run on CI
+
+## How to run on local environment
+The following instructions are the same as the CI workflow.
+
+### Install dependencies
+```bash
+conda create -n faiss python=3.10
+conda activate faiss
+conda install -c pytorch faiss-cpu=1.7.4 mkl=2021 blas=1.0=mkl
+conda install matplotlib scikit-learn
+pip install h5py
+```
+
+### Run search
+Please replace size `300K` with `10M`, `30M`, and `100M` for other subsets.
+
+```bash
+chmod +x ./run_300K.sh
+./run_300K.sh
+```
+
+### Run evaluation
+```bash
+python eval/eval.py --dir result
+python eval/plot.py --size 300K res.csv
+```
+
+
+## Dependencies
+All dependencies are included in `.github/workflows/ci.yml`.
+
+## Description of our solution
+Details will be described in the paper. Here is a short summary.
+
+- Python and [Faiss](https://github.com/facebookresearch/faiss) library are used for the implementation.
+- [NSG](https://github.com/ZJULearning/nsg) is used for the base index structure. Its implementation is included in Faiss.
+- Search better enterpoints of NSG graph traversal by using kmeans clustering.
+- Reduce vector dimension by using PCA. The dimension is a SIMD-friendly value.
+- Use [AntihubRemoval](https://github.com/naaktslaktauge/antihub-removal) for the preprocessing, which reduce the number of data points by removing anti-hub points.
+- Hyperparameters are tuned with multi-objective blackbox optimization using [Optuna](https://optuna.readthedocs.io/en/stable/index.html) library.
