@@ -146,8 +146,6 @@ def run(
         # init index instance
         index = faiss.index_factory(index_dim, index_identifier)
 
-        # dot product / angle as distance (1-cosine)
-
     else:
         raise Exception(f"unsupported input type {kind}")
 
