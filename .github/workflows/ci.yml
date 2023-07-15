@@ -54,7 +54,7 @@ jobs:
           conda activate faiss
           chmod +x ./run_300K.sh
           ./run_300K.sh
-          python3 eval/eval.py --dir result
+          python3 eval/eval.py
           python3 eval/plot.py --size=300K res.csv
       - uses: actions/upload-artifact@v3
         with:
@@ -69,7 +69,7 @@ jobs:
     #       conda activate faiss
     #       chmod +x ./run_10M.sh
     #       ./run_10M.sh
-    #       python3 eval/eval.py --dir result
+    #       python3 eval/eval.py
     #       python3 eval/plot.py --size=10M res.csv
     #   - uses: actions/upload-artifact@v3
     #     with:
@@ -84,7 +84,7 @@ jobs:
     #       conda activate faiss
     #       chmod +x ./run_30M.sh
     #       ./run_30M.sh
-    #       python3 eval/eval.py --dir result
+    #       python3 eval/eval.py
     #       python3 eval/plot.py --size=30M res.csv
     #   - uses: actions/upload-artifact@v3
     #     with:
@@ -99,7 +99,7 @@ jobs:
     #       conda activate faiss
     #       chmod +x ./run_100M.sh
     #       ./run_100M.sh
-    #       python3 eval/eval.py --dir result
+    #       python3 eval/eval.py
     #       python3 eval/plot.py --size=100M res.csv
     #   - uses: actions/upload-artifact@v3
     #     with:
