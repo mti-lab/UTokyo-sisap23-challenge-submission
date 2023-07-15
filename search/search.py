@@ -3,7 +3,7 @@ import os
 import time
 from pathlib import Path
 from urllib.request import urlretrieve
-from typing import Literal
+from typing import Literal, Dict, Any
 
 import faiss
 import h5py
@@ -18,18 +18,42 @@ from ep_searcher import (
 )
 
 
-Algorithm = Literal[
-    "IVF4096_HNSW32,Flat",
-    "IVF2048_HNSW32,Flat",
-    "HNSW32,Flat",
-    "NSG32,Flat",
-]
 Size = Literal["100K", "300K", "10M", "30M", "100M"]
 EntryPointSearch = Literal[
     "original",
     "random",
     "kmeans",
 ]
+size2params: Dict[str, Dict[str, Any]] = {
+    "300K": {
+        "ep_search": "kmeans",
+        "n_ep": 12,
+        "pca_dim": 636,
+        "search_L": 21,
+        "alpha": 0.9628679294098882,
+    },
+    "10M": {
+        "ep_search": "kmeans",
+        "n_ep": 29,
+        "pca_dim": 600,
+        "search_L": 29,
+        "alpha": 0.9772473945888052,
+    },
+    "30M": {
+        "ep_search": "kmeans",
+        "n_ep": 21,
+        "pca_dim": 636,
+        "search_L": 34,
+        "alpha": 0.9990569475035961,
+    },
+    "100M": {
+        "ep_search": "kmeans",
+        "n_ep": 21,
+        "pca_dim": 636,
+        "search_L": 34,
+        "alpha": 0.9990569475035961,
+    },
+}
 
 
 def download(src, dst):
@@ -41,7 +65,6 @@ def download(src, dst):
 
 def prepare(kind: str, size: Size):
     url = "https://sisap-23-challenge.s3.amazonaws.com/SISAP23-Challenge"
-    # url = "http://ingeotec.mx/~sadit/metric-datasets/LAION/SISAP23-Challenge"
     task = {
         "query": f"{url}/public-queries-10k-{kind}.h5",
         "dataset": f"{url}/laion2B-en-{kind}-n={size}.h5",
@@ -83,7 +106,7 @@ def get_ep_searcher(
 def run(
     kind: str,
     key: str,
-    algo: Algorithm,
+    algo: str, # e.g. "NSG32,Flat
     /,
     size: Size = "100K",
     k: int = 10,
