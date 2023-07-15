@@ -37,9 +37,6 @@ python eval/eval.py --dir result
 python eval/plot.py --size 300K res.csv
 ```
 
-## Dependencies
-All dependencies are included in `.github/workflows/ci.yml`.
-
 ## Description of our solution
 Details will be described in the paper. Here is a short summary.
 
@@ -69,3 +66,9 @@ These scripts are used for tuning hyperparameters, which is not used for evaluat
 
 ### Scripts for evaluation
 - eval/ directory contains scripts for evaluation from [sisap23-laion-challenge-evaluation](https://github.com/sisap-challenges/sisap23-laion-challenge-evaluation/tree/master).
+
+## Reference
+- AntihubRemoval: K. Tanaka, Y. Matsui, and S. Satoh (2021). Efficient Nearest Neighbor Search by Removing Anti-hub. ICMR 2021
+- NSG: C. Fu, C. Xiang, C. Wang, and D. Cai (2019). Fast Approximate Nearest Neighbor Search With The Navigating Spreading-out Graphs. VDLB 2019
+- Faiss: Johnson, J., Douze, M., & Jegou, H. (2019). Billion-scale similarity search with GPUs. IEEE Transactions on Big Data, 7(3), 535–547.
+- Optuna: Akiba, T., Sano, S., Yanase, T., Ohta, T., & Koyama, M. (2019). Optuna: A Next-generation Hyperparameter Optimization Framework. In Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining.
