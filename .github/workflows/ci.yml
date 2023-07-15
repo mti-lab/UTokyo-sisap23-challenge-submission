@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: "Ref (commit hash0"
+        description: "Ref (commit hash)"
         required: false
         default: ""
 
@@ -39,7 +39,8 @@ jobs:
         with:
           submodules: "true"
           fetch-depth: 0
-      - run: git checkout ${{ github.event.inputs.ref }}
+      - name: Checkout commit hash ${{ github.event.inputs.ref }}
+        run: git checkout ${{ github.event.inputs.ref }}
         if: ${{ github.event.inputs.ref != '' }}
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
