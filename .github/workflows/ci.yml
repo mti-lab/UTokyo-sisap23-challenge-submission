@@ -13,16 +13,11 @@ on:
 
 jobs:
   test:
-    name: ${{matrix.subset-size}} - ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    name: ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        subset-size:
-          - 300K
-          - 10M
-          - 30M
-          - 100M
         version:
           - "1.8"
         os:
@@ -53,17 +48,62 @@ jobs:
           conda install -c pytorch faiss-cpu=1.7.4 mkl=2021 blas=1.0=mkl
           conda install matplotlib scikit-learn
           pip install h5py
-      - name: Run benchmark (size=${{ matrix.subset-size }})
+      - name: Run benchmark (size=300K)
         shell: bash -el {0}
         run: |
           conda activate faiss
-          chmod +x ./run_${{ matrix.subset-size }}.sh
-          ./run_${{ matrix.subset-size }}.sh
+          chmod +x ./run_300K.sh
+          ./run_300K.sh
           python3 eval/eval.py --dir result
-          python3 eval/plot.py --size=${{ matrix.subset-size }} res.csv
+          python3 eval/plot.py --size=300K res.csv
       - uses: actions/upload-artifact@v3
         with:
-          name: Results on ${{ matrix.subset-size }}
+          name: Results on 300K
           path: |
             res.csv
-            result_${{ matrix.subset-size }}.png
+            result_300K.png
+
+    #   - name: Run benchmark (size=10M)
+    #     shell: bash -el {0}
+    #     run: |
+    #       conda activate faiss
+    #       chmod +x ./run_10M.sh
+    #       ./run_10M.sh
+    #       python3 eval/eval.py --dir result
+    #       python3 eval/plot.py --size=10M res.csv
+    #   - uses: actions/upload-artifact@v3
+    #     with:
+    #       name: Results on 10M
+    #       path: |
+    #         res.csv
+    #         result_10M.png
+
+    #   - name: Run benchmark (size=30M)
+    #     shell: bash -el {0}
+    #     run: |
+    #       conda activate faiss
+    #       chmod +x ./run_30M.sh
+    #       ./run_30M.sh
+    #       python3 eval/eval.py --dir result
+    #       python3 eval/plot.py --size=30M res.csv
+    #   - uses: actions/upload-artifact@v3
+    #     with:
+    #       name: Results on 30M
+    #       path: |
+    #         res.csv
+    #         result_30M.png
+
+    #   - name: Run benchmark (size=100M)
+    #     shell: bash -el {0}
+    #     run: |
+    #       conda activate faiss
+    #       chmod +x ./run_100M.sh
+    #       ./run_100M.sh
+    #       python3 eval/eval.py --dir result
+    #       python3 eval/plot.py --size=100M res.csv
+    #   - uses: actions/upload-artifact@v3
+    #     with:
+    #       name: Results on 100M
+    #       path: |
+    #         res.csv
+    #         result_100M.png
