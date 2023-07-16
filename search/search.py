@@ -54,6 +54,8 @@ size2runtime_params: Dict[str, List[Dict[str, Any]]] = {
     "300K": [
         {"search_L": 21, "ep_search_mode": "original", "threads": 64},
         {"search_L": 21, "ep_search_mode": "kmeans", "threads": 64},
+        {"search_L": 21, "ep_search_mode": "original", "threads": 32},
+        {"search_L": 21, "ep_search_mode": "kmeans", "threads": 32},
     ],
     "10M": [
         {"search_L": 52, "ep_search_mode": "original", "threads": 64},
@@ -289,7 +291,7 @@ def run(
         identifier = f"index=({index_algo}),query=(search_L={param['search_L']}),build=(alpha={build_param['alpha']},pca_dim={build_param['pca_dim']}),threads={faiss.omp_get_max_threads()},ep={param['ep_search_mode']}"
         store_results(
             dst=os.path.join(outdir, kind, size, f"{identifier}.h5"),
-            algo=index_algo,
+            algo=identifier,
             kind=kind,
             D=D,
             I=I,
