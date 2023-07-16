@@ -1,6 +1,6 @@
-# mti-lab-sisap23-challenge-submission
+# UTokyo-sisap23-challenge-submission
 
-This repository is a submission for the [SISAP 2023 Indexing Challenge](https://sisap-challenges.github.io/) by team mti-lab.
+This repository is a submission for the [SISAP 2023 Indexing Challenge](https://sisap-challenges.github.io/) by team `UTokyo`.
 
 ## Information
 - Task: A
