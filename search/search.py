@@ -141,8 +141,6 @@ def run_search(
     if pca_mat is not None:
         # PCA for query
         query = pca_mat.apply_py(query)
-        # TODO: remove assert after debug
-        assert query.shape[1] == data.shape[1]
 
     index.nsg.search_L = search_L
 
