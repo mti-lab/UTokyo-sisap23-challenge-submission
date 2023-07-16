@@ -197,7 +197,6 @@ def build_index(
 
     # build index
     index_dim = data.shape[1]
-    # TODO: metric
     index = faiss.IndexNSGFlat(index_dim, 32)
     index.train(data)
     assert index.is_trained
