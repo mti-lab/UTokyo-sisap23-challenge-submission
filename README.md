@@ -15,8 +15,8 @@ The following instructions are for the CI workflow.
 - Go to [CI page in Actions tab](https://github.com/mti-lab/mti-lab-sisap23-challenge-submission/actions/workflows/ci.yml).
 - Click `Run workflow` button.
 - Select `main` branch. (by default)
-- Choose size of the subset you will evaluate. (300K, 10M, 30M, 100M)
-- Fill in `ref` input with the commit hash you will evaluate.
+- Choose `Size of dataset` you will evaluate. (300K, 10M, 30M, 100M)
+- Fill in `Ref (commit hash)` input with the commit hash you will evaluate.
   - The commit hash you should use in evaluation is on [our pre-registration issue](https://github.com/sisap-challenges/challenge2023/issues/2).
 
 
