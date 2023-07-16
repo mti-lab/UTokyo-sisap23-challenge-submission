@@ -24,6 +24,7 @@ EntryPointSearch = Literal[
     "random",
     "kmeans",
 ]
+# Build parameter (fixed)
 size2build_param: Dict[str, Dict[str, Any]] = {
     "300K": {
         "n_ep": 12,
@@ -32,42 +33,50 @@ size2build_param: Dict[str, Dict[str, Any]] = {
         "threads": 64,
     },
     "10M": {
-        "n_ep": 20,
+        "n_ep": 12,
         "pca_dim": 732,
         "alpha": 0.9344174472408312,
         "threads": 64,
     },
     "30M": {
-        "n_ep": 20,
+        "n_ep": 12,
         "pca_dim": 732,
         "alpha": 0.9344174472408312,
         "threads": 64,
     },
     "100M": {
-        "n_ep": 20,
-        "pca_dim": 732,
+        "n_ep": 12,
+        "pca_dim": 768,
         "alpha": 0.9344174472408312,
         "threads": 64,
     },
 }
+# Runtime parameters to be sweeped.
+# Note that sweeping does not require re-build index.
 size2runtime_params: Dict[str, List[Dict[str, Any]]] = {
     "300K": [
-        {"search_L": 21, "ep_search_mode": "original", "threads": 64},
-        {"search_L": 21, "ep_search_mode": "kmeans", "threads": 64},
-        {"search_L": 21, "ep_search_mode": "original", "threads": 32},
-        {"search_L": 21, "ep_search_mode": "kmeans", "threads": 32},
+        {"search_L": x, "ep_search_mode": e, "threads": t}
+        for x in range(20, 22)
+        for e in ["original", "kmeans"]
+        for t in [64, 48, 32, 16]
     ],
     "10M": [
-        {"search_L": 52, "ep_search_mode": "original", "threads": 64},
-        {"search_L": 52, "ep_search_mode": "kmeans", "threads": 64},
+        {"search_L": x, "ep_search_mode": e, "threads": t}
+        for x in range(40, 57)
+        for e in ["original", "kmeans"]
+        for t in [64, 48, 32, 16]
     ],
     "30M": [
-        {"search_L": 52, "ep_search_mode": "original", "threads": 64},
-        {"search_L": 52, "ep_search_mode": "kmeans", "threads": 64},
+        {"search_L": x, "ep_search_mode": e, "threads": t}
+        for x in range(56, 77)
+        for e in ["original", "kmeans"]
+        for t in [64, 48, 32, 16]
     ],
     "100M": [
-        {"search_L": 52, "ep_search_mode": "original", "threads": 64},
-        {"search_L": 52, "ep_search_mode": "kmeans", "threads": 64},
+        {"search_L": x, "ep_search_mode": e, "threads": t}
+        for x in range(70, 100)
+        for e in ["original", "kmeans"]
+        for t in [64, 48, 32, 16]
     ],
 }
 
@@ -262,10 +271,8 @@ def run(
         print(f"Running search with {param}")
         ep_searcher = ep_searchers[param["ep_search_mode"]]
         runtime_n_threads = param["threads"] if "threads" in param else 64
-        if runtime_n_threads != n_threads:
-            # change num threads of faiss
-            faiss.omp_set_num_threads(runtime_n_threads)
-            print(f"set number of threads to {runtime_n_threads} for runtime")
+        faiss.omp_set_num_threads(runtime_n_threads)
+        print(f"set number of threads to {runtime_n_threads} for runtime")
 
         ### begin search section
         search_start = time.time()
@@ -289,6 +296,7 @@ def run(
         preprocess_algo = f"PCA{build_param['pca_dim']}" if pca_mat is not None else ""
         index_algo = f"{preprocess_algo},{algo}"
         identifier = f"index=({index_algo}),query=(search_L={param['search_L']}),build=(alpha={build_param['alpha']},pca_dim={build_param['pca_dim']}),threads={faiss.omp_get_max_threads()},ep={param['ep_search_mode']}"
+        params_label = f"query=(search_L={param['search_L']},ep={param['ep_search_mode']},threads={faiss.omp_get_max_threads()})"
         store_results(
             dst=os.path.join(outdir, kind, size, f"{identifier}.h5"),
             algo=identifier,
@@ -297,7 +305,7 @@ def run(
             I=I,
             buildtime=build_duration,
             querytime=search_duration,
-            params=identifier,
+            params=params_label,
             size=size,
         )
 
