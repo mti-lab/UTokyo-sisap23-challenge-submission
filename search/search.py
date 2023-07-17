@@ -70,7 +70,7 @@ size2runtime_params: Dict[str, List[Dict[str, Any]]] = {
     ],
     "30M": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
-        for x in range(64, 256)
+        for x in range(64, 224)
         for e in ["original", "kmeans"]
         for t in [64, 32, 16, 8]
     ],
