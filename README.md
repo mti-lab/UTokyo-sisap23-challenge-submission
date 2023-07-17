@@ -22,13 +22,6 @@ The following instructions are for the CI workflow.
 
 ![CI page](./image/ci_instruction.png)
 
-
-The following jobs are executed in sequence.
-- `Run benchmark (size=300K)`
-- `Run benchmark (size=10M)`
-- `Run benchmark (size=30M)`
-- `Run benchmark (size=100M)`
-
 The each result including csv files and figures is saved as an artifact `Results on ${size}`. You can download it from the GitHub Actions page.
 
 ## How to use other query sets
