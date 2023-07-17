@@ -39,13 +39,13 @@ size2build_param: Dict[str, Dict[str, Any]] = {
         "threads": 32,
     },
     "30M": {
-        "n_ep": 12,
+        "n_ep": 20,
         "pca_dim": 732,
         "alpha": 0.9628679294098882,
         "threads": 32,
     },
     "100M": {
-        "n_ep": 12,
+        "n_ep": 24,
         "pca_dim": 732,
         "alpha": 1.0,
         "threads": 32,
@@ -54,27 +54,29 @@ size2build_param: Dict[str, Dict[str, Any]] = {
 # Runtime parameters to be sweeped.
 # Note that sweeping does not require re-build index.
 size2runtime_params: Dict[str, List[Dict[str, Any]]] = {
+    # 300K is evaluated by public query
     "300K": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
         for x in range(21, 23)
         for e in ["original", "kmeans"]
         for t in [64, 32, 16, 8]
     ],
+    # rest are evaluated by private query
     "10M": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
-        for x in range(40, 57)
+        for x in range(40, 160)
         for e in ["original", "kmeans"]
         for t in [64, 32, 16, 8]
     ],
     "30M": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
-        for x in range(56, 77)
+        for x in range(64, 256)
         for e in ["original", "kmeans"]
         for t in [64, 32, 16, 8]
     ],
     "100M": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
-        for x in range(70, 111)
+        for x in range(90, 256)
         for e in ["original", "kmeans"]
         for t in [64, 32, 16, 8]
     ],
