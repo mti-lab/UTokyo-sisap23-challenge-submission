@@ -83,7 +83,7 @@ Details will be described in the paper. Here is a short summary.
 
 ## Hyperparameters
 Hyperparameters to be used is hard-coded in `search/search.py`.
-There are some candidate sets for runtime hyperparameters in the script. Note that it is not required to rebuild index for each set, following [the regulation of the submission](https://github.com/sisap-challenges/challenge2023/discussions/10). The result for each set is saved as a separated record in the same csv file.
+There are multiple candidate sets for runtime hyperparameters in the script. Note that it is not required to rebuild index for each set, so it is in accordance with the [the regulation of the submission](https://github.com/sisap-challenges/challenge2023/discussions/10). The result for each set is saved as a separated record in the same csv file `res.csv`. Please select the best-performing configuration from the csv file.
 
 Runtime hyperparameters are:
 | Hyperparameter | Description |
