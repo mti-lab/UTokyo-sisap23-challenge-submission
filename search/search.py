@@ -56,7 +56,7 @@ size2build_param: Dict[str, Dict[str, Any]] = {
 size2runtime_params: Dict[str, List[Dict[str, Any]]] = {
     "300K": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
-        for x in range(20, 22)
+        for x in range(21, 23)
         for e in ["original", "kmeans"]
         for t in [64, 32, 16, 8]
     ],
