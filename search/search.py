@@ -45,7 +45,7 @@ size2build_param: Dict[str, Dict[str, Any]] = {
         "threads": 32,
     },
     "100M": {
-        "n_ep": 20,
+        "n_ep": 0,
         "pca_dim": 768,
         "alpha": 1.0,
         "threads": 32,
@@ -59,26 +59,26 @@ size2runtime_params: Dict[str, List[Dict[str, Any]]] = {
         {"search_L": x, "ep_search_mode": e, "threads": t}
         for x in range(21, 23)
         for e in ["original", "kmeans"]
-        for t in [64, 32, 16, 8]
+        for t in [64, 32, 16]
     ],
     # rest are evaluated by private query
     "10M": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
-        for x in list(range(40, 91)) + list(range(91, 256, 3))
+        for x in list(range(40, 80)) + list(range(80, 161, 16))
         for e in ["original", "kmeans"]
-        for t in [64, 32, 16, 8]
+        for t in [64, 32, 16]
     ],
     "30M": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
-        for x in list(range(64, 128)) + list(range(128, 256, 3))
+        for x in list(range(64, 128)) + list(range(128, 256, 16))
         for e in ["original", "kmeans"]
-        for t in [64, 32, 16, 8]
+        for t in [64, 32, 16]
     ],
     "100M": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
-        for x in list(range(80, 168, 2)) + list(range(168, 256, 3)) + list(range(256, 384, 16))
-        for e in ["original", "kmeans"]
-        for t in [64, 32, 16, 8]
+        for x in list(range(80, 168, 3)) + list(range(168, 256, 16)) + [256, 300, 384]
+        for e in ["original"]
+        for t in [64, 32, 16]
     ],
 }
 
@@ -142,7 +142,9 @@ def run_search(
 ) -> Tuple[np.ndarray, np.ndarray]:
     if pca_mat is not None:
         # PCA for query
-        query = pca_mat.apply_py(query)
+        if data.shape[1] != query.shape[1]:
+            query = pca_mat.apply_py(query)
+    assert data.shape[1] == query.shape[1]
 
     index.nsg.search_L = search_L
 
@@ -176,7 +178,6 @@ def build_index(
         ahr = AntihubRemover(k=16, d=d)
         print(f"removing antihub... (alpha = {alpha:.3f})")
         print(f"Original DB Size: {data.shape}")
-        # sz = data.shape[0] / 10
         sz = data.shape[0] // 10
         data, hub2id = ahr.remove_approximated_antihub(
             data[:sz, :], data, alpha=alpha, n_cluster=512, return_vecs=True
@@ -276,13 +277,14 @@ def run(
         runtime_n_threads = param["threads"] if "threads" in param else 64
         faiss.omp_set_num_threads(runtime_n_threads)
         print(f"set number of threads to {runtime_n_threads} for runtime")
+        query_cp = query.copy()
 
         ### begin search section
         search_start = time.time()
         D, I = run_search(
             index=index,
             data=data,
-            query=query,
+            query=query_cp,
             k=k,
             pca_mat=pca_mat,
             ep_searcher=ep_searcher,
