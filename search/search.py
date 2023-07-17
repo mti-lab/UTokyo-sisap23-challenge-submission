@@ -41,13 +41,13 @@ size2build_param: Dict[str, Dict[str, Any]] = {
     "30M": {
         "n_ep": 12,
         "pca_dim": 732,
-        "alpha": 0.9344174472408312,
+        "alpha": 0.9628679294098882,
         "threads": 32,
     },
     "100M": {
         "n_ep": 12,
-        "pca_dim": 768,
-        "alpha": 0.9344174472408312,
+        "pca_dim": 732,
+        "alpha": 1.0,
         "threads": 32,
     },
 }
