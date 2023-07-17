@@ -12,7 +12,7 @@ This repository is a submission for the [SISAP 2023 Indexing Challenge](https://
 ## How to run on CI
 The following instructions are for the CI workflow. 
 
-- Go to [CI page in Actions tab](https://github.com/mti-lab/mti-lab-sisap23-challenge-submission/actions/workflows/ci.yml).
+- Go to [CI page in Actions tab](https://github.com/mti-lab/UTokyo-sisap23-challenge-submission/actions/workflows/ci.yml).
 - Click `Run workflow` button.
 - Select `main` branch. (by default)
 - Choose `Size of dataset` you will evaluate. (300K, 10M, 30M, 100M)
