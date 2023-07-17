@@ -23,7 +23,7 @@ The following instructions are for the CI workflow.
 
 ![CI page](./image/ci_instruction.png)
 
-The each result including csv files and figures is saved as an artifact `Results on ${size}`. You can download it from the GitHub Actions page.
+The each result including csv files and figures is saved as an artifact `Results on ${size}`. You can download it from the GitHub Actions page. The plotted figures for size 10M, 30M, and 100M may be too large and too vague. The final selection of best-performing configuration should be done by looking at the csv file.
 
 ## Note for evaluation
 Note that query time is measured across all processing that depends on the input query. That is, it includes all pre-processing, searching, and post-processing for the query. If query time should only be measured for searches, please contact us. We will provide a script for the correct measurement.
