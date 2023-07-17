@@ -62,8 +62,7 @@ pip install h5py
 
 ### Run search
 ```bash
-chmod +x ./run_300K.sh
-./run_300K.sh
+python search/search.py -k 10 --size 300K
 ```
 
 ### Run evaluation
