@@ -16,6 +16,7 @@ The following instructions are for the CI workflow.
 - Click `Run workflow` button.
 - Select `main` branch. (by default)
 - Choose `Size of dataset` you will evaluate. (300K, 10M, 30M, 100M)
+  - Plesae execute the workflow for each size (300K, 10M, 30M, 100M) **separately** and **in this order** becauswe the workflow with smaller size will take less time.
 - Fill in `Ref (commit hash)` input with the commit hash you will evaluate.
   - The commit hash you should use in evaluation is on [our pre-registration issue](https://github.com/sisap-challenges/challenge2023/issues/2).
 
@@ -55,6 +56,11 @@ pip install h5py
 
 ### Run search
 ```bash
+chmod +x ./run_300K.sh
+./run_300K.sh
+
+or
+
 python search/search.py -k 10 --size 300K
 ```
 

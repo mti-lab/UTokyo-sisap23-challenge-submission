@@ -45,8 +45,8 @@ size2build_param: Dict[str, Dict[str, Any]] = {
         "threads": 32,
     },
     "100M": {
-        "n_ep": 0,
-        "pca_dim": 732,
+        "n_ep": 20,
+        "pca_dim": 768,
         "alpha": 1.0,
         "threads": 32,
     },
@@ -77,7 +77,7 @@ size2runtime_params: Dict[str, List[Dict[str, Any]]] = {
     "100M": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
         for x in list(range(80, 168, 2)) + list(range(168, 256, 3)) + list(range(256, 384, 16))
-        for e in ["original"]
+        for e in ["original", "kmeans"]
         for t in [64, 32, 16, 8]
     ],
 }
