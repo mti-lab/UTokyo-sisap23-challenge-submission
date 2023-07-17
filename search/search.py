@@ -45,7 +45,7 @@ size2build_param: Dict[str, Dict[str, Any]] = {
         "threads": 32,
     },
     "100M": {
-        "n_ep": 24,
+        "n_ep": 0,
         "pca_dim": 732,
         "alpha": 1.0,
         "threads": 32,
@@ -64,20 +64,20 @@ size2runtime_params: Dict[str, List[Dict[str, Any]]] = {
     # rest are evaluated by private query
     "10M": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
-        for x in range(40, 160)
+        for x in list(range(40, 91)) + list(range(91, 256, 3))
         for e in ["original", "kmeans"]
         for t in [64, 32, 16, 8]
     ],
     "30M": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
-        for x in range(64, 224)
+        for x in list(range(64, 128)) + list(range(128, 256, 3))
         for e in ["original", "kmeans"]
         for t in [64, 32, 16, 8]
     ],
     "100M": [
         {"search_L": x, "ep_search_mode": e, "threads": t}
-        for x in range(90, 256)
-        for e in ["original", "kmeans"]
+        for x in list(range(80, 168)) + list(range(168, 256, 3))
+        for e in ["original"]
         for t in [64, 32, 16, 8]
     ],
 }
@@ -206,9 +206,13 @@ def build_index(
 
     # set up ep searcher (original, kmeans)
     original_ep_searcher = EPSearcherOriginal(data, index.nsg.enterpoint)
-    kmeans_ep_searcher = EPSearcherKmeans(
-        data, index.nsg.enterpoint, build_param["n_ep"]
-    )
+    n_ep = build_param["n_ep"]
+    if n_ep > 1:
+        kmeans_ep_searcher = EPSearcherKmeans(
+            data, index.nsg.enterpoint, build_param["n_ep"]
+        )
+    else:
+        kmeans_ep_searcher = EPSearcherOriginal(data, index.nsg.enterpoint)
 
     return {
         "data": data,
