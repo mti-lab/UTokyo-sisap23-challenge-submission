@@ -25,6 +25,9 @@ The following instructions are for the CI workflow.
 
 The each result including csv files and figures is saved as an artifact `Results on ${size}`. You can download it from the GitHub Actions page.
 
+## Note for evaluation
+Note that query time is measured across all processing that depends on the input query. That is, it includes all pre-processing, searching, and post-processing for the query. If query time should only be measured for searches, please contact us. We will provide a script for the correct measurement.
+
 ## How to use other query sets
 Change the following section in `search/search.py` to use other query sets.
 You can change if needed:
